@@ -32,7 +32,7 @@ jobs:
         run: cp ./seed-data/post* ./vote
       -
         name: Copy in Seed Script
-        run: cp ./seed-data/generate-votes.sh ./vote/generate-some.votes.sh
+        run: cp ./seed-data/generate-votes.sh ./vote/generate-some-votes.sh
       -
         # we need qemu and buildx so we can build multiple platforms later
         name: Set up QEMU
