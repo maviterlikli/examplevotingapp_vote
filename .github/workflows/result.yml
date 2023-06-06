@@ -4,14 +4,14 @@ on:
   # we want pull requests so we can build(test) but not push to image registry
   push:
     branches:
-      - 'main'
+      - "main"
     # only build when important files change
     paths:
       - 'result/**'
       - '.github/workflows/result.yml'
   pull_request:
     branches:
-      - 'main'
+      - "main"
     # only build when important files change
     paths:
       - 'result/**'
@@ -26,7 +26,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
       -
         # we need qemu and buildx so we can build multiple platforms later
         name: Set up QEMU
