@@ -65,7 +65,7 @@ jobs:
           tags: |
             type=raw,value=latest
       -
-        # this will build the images, once per platform, 
+        # this will build the images, once per platformx, 
         # then push to both Docker Hub and GHCR
         name: Build and push Docker image
         id: build-and-push
