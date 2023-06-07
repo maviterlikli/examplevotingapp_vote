@@ -49,9 +49,7 @@ jobs:
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          file: result/Dockerfile
+          push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/result:latest
-          labels: ${{ steps.meta.outputs.labels }}
-      -
-        name: Show image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+
