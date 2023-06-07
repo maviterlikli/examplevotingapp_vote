@@ -52,8 +52,6 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/result:latest
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
       -
         name: Show image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
