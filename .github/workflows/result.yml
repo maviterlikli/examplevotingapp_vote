@@ -4,14 +4,14 @@ on:
   # we want pull requests so we can build(test) but not push to image registry
   push:
     branches:
-      - 'main'
+      - "main"
     # only build when important files change
     paths:
       - 'result/**'
       - '.github/workflows/result.yml'
   pull_request:
     branches:
-      - 'main'
+      - "main"
     # only build when important files change
     paths:
       - 'result/**'
@@ -26,7 +26,7 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v3
       -
         # we need qemu and buildx so we can build multiple platforms later
         name: Set up QEMU
@@ -46,9 +46,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
       - 
-        name: Login to DockerHub
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1 
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -68,18 +67,9 @@ jobs:
         # this will build the images, once per platform, 
         # then push to both Docker Hub and GHCR
         name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
-          context: result
-          platforms: linux/amd64,linux/arm64,linux/arm/v7
-          builder: ${{ steps.buildx.outputs.name }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
-          # don't push during a pull_request, only build
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-      -
-        name: Show image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
+          context: .
+          file: result/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/ResultApp:latest
